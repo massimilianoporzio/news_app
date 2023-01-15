@@ -37,7 +37,7 @@ class NewsInfoModel extends NewsInfo {
     return NewsInfoModel(
         title: map['title'],
         authorName: map['author'],
-        content: map['content'],
+        content: '${map['content']}',
         imageURL: map['urlToImage'],
         dateTime:
             map['publishedAt'] //!dipendono tutte dal JSON che arriva da API
