@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/core/constants/palette.dart';
+import 'package:news_app/features/show_news/presentation/cubit/news_cubit.dart';
 import 'package:news_app/features/show_news/presentation/pages/components/news_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    //*mi serve il cubit (ma per averlo devo avere il provider)
+    context.read<NewsCubit>().fetchNews(null);
+  }
 
   @override
   Widget build(BuildContext context) {
