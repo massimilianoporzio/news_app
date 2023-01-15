@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:news_app/core/constants/palette.dart';
 import 'package:news_app/features/show_news/presentation/pages/news_view_page.dart';
 
+import '../../../domain/entities/news_info.dart';
+
 class NewsCard extends StatelessWidget {
-  const NewsCard({super.key});
+  final NewsInfo newsInfo;
+  const NewsCard({super.key, required this.newsInfo});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +15,7 @@ class NewsCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const NewsViewPage(),
+            builder: (context) => NewsViewPage(newsInfo: newsInfo),
           ),
         );
       },
@@ -24,10 +27,12 @@ class NewsCard extends StatelessWidget {
           Container(
             height: 260,
             color: Palette.lightGrey,
-            child: Image.network(
-              'https://www.smartworld.it/wp-content/uploads/2021/09/apple-final-2021-hd-alternativa-1280x720.jpg',
-              fit: BoxFit.cover,
-            ),
+            child: newsInfo.imageURL != null
+                ? Image.network(
+                    newsInfo.imageURL!,
+                    fit: BoxFit.cover,
+                  )
+                : const SizedBox(),
           ),
           Positioned(
             left: 16,
@@ -44,15 +49,15 @@ class NewsCard extends StatelessWidget {
                       color: Colors.black12)
                 ],
               ),
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Center(
                   child: Text(
-                    'New Title',
+                    newsInfo.title ?? '-- No title --',
                     textAlign: TextAlign.justify,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Palette.deepBlue,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

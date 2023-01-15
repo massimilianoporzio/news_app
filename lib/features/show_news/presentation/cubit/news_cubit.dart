@@ -12,6 +12,7 @@ part 'news_state.dart';
 class NewsCubit extends Cubit<NewsState> {
   NewsCubit() : super(const NewsInitial(news: []));
   final FetchNewsUsecase _fetchNewsUsecase = sl<FetchNewsUsecase>();
+
   void fetchNews(String? searchText) async {
     emit(NewsLoading());
     final Either<Failure, List<NewsInfo>> fetchNewsresult =
@@ -21,7 +22,15 @@ class NewsCubit extends Cubit<NewsState> {
     fetchNewsresult.fold((l) {
       emit(NewsError());
     }, (r) {
-      emit(NewsInitial(news: r));
+      if (r.isEmpty) {
+        emit(NewsEmpty());
+      } else {
+        if (searchText != null) {
+          emit(NewsInitialSearch(news: r));
+        } else {
+          emit(NewsInitial(news: r));
+        }
+      }
     });
   }
 }
